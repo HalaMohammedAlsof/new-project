@@ -1,12 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI for docker new-project1
+name: CI for docker new-project
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    tags:
+      - "v*.*.*"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -22,8 +22,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
-      
+
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -32,21 +31,32 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: echo Hello, new-project!
 
       # Building
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
 
-        
-      # Pushing
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: ./backend
+          context: ./
           file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/new-project1:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/new-project:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       # Runs a set of commands using the runners shell
       - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}  
+        run: echo ${{ steps.docker_build.outputs.digest }}
