@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI for docker new-project
+name: CI for docker new-project1
 
 # Controls when the workflow will run
 on:
@@ -47,7 +47,7 @@ jobs:
           context: ./backend
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/new-project:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/new-project1:latest
 
       # Runs a set of commands using the runners shell
       - name: Image digest
