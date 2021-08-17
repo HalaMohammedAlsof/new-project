@@ -38,7 +38,7 @@ jobs:
 
       # Building
       - name: Set up Docker Buildx
-        id: buildx
+        id: buildx-hala
         uses: docker/setup-buildx-action@v1
         
       # Pushing
