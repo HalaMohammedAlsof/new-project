@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI for docker docker-project2
+name: CI for docker docker-project2p
 
 # Controls when the workflow will run
 on:
@@ -32,7 +32,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, docker-project2!
+        run: echo Hello, docker-project2p!
 
       # Building
       - name: Set up Docker Buildx
@@ -54,7 +54,7 @@ jobs:
           file: ./frontend/Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/docker-flasksql:latest
+          tags: ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/docker-project2p:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
